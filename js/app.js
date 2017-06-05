@@ -85,10 +85,25 @@ var mostrarMapa = function (coordenadas) {
     });
 }
 
+var filtrarRestaurantes = function (e) {
+	e.preventDefault();
+	var criterioBusqueda = $("#search").val().toLowerCase();
+	var restaurantesFiltrados = arregloRestaurantes.filter(function (restaurante) {
+		return restaurante.nombre.toLowerCase().indexOf(criterioBusqueda) >= 0;
+  //   if(restaurante.nombre.toLowerCase().indexOf(criterioBusqueda) >= 0){
+  //     return restaurante.nombre.toLowerCase().indexOf(criterioBusqueda);
+  //   } else{
+  //     restaurante.hide();
+  //   }
+	});
+  console.log(restaurantesFiltrados)
+	mostrarRestaurantes(restaurantesFiltrados);
+};
+
 var mostrarRestaurantes= function (restaurantes) {
   console.log(restaurantes)
 	var plantillaFinal = "";
-	arregloRestaurantes.forEach(function (restaurante) {
+	restaurantes.forEach(function (restaurante) {
 		plantillaFinal += plantillaDatosRestaurante.replace("_NombreRestaurante_", restaurante.nombre)
       .replace("_comida_", restaurante.comida)
 			.replace("_direccion_", restaurante.direccion)
@@ -97,14 +112,6 @@ var mostrarRestaurantes= function (restaurantes) {
 	$("#restaurantes").html(plantillaFinal);
 };
 
-var filtrarRestaurantes = function (e) {
-	e.preventDefault();
-	var criterioBusqueda = $("#search").val().toLowerCase();
-	var restaurantesFiltrados = arregloRestaurantes.filter(function (restaurante) {
-		return restaurante.nombre.toLowerCase().indexOf(criterioBusqueda) >= 0;
-	});
-  console.log(restaurantesFiltrados)
-	mostrarRestaurantes(restaurantesFiltrados);
-};
+
 
 $(document).ready(cargarPagina);
