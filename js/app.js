@@ -55,7 +55,8 @@ var arregloRestaurantes = [
    //---------------------------------------------//
 var cargarPagina = function(){
   obtenerUbicacion();
-  mostrarRestaurantes();
+  mostrarRestaurantes(arregloRestaurantes);
+  $("#busqueda").submit(filtrarRestaurantes);
 };
 var obtenerUbicacion = function(){
   if (navigator.geolocation) {
@@ -84,7 +85,8 @@ var mostrarMapa = function (coordenadas) {
     });
 }
 
-var mostrarRestaurantes= function () {
+var mostrarRestaurantes= function (restaurantes) {
+  console.log(restaurantes)
 	var plantillaFinal = "";
 	arregloRestaurantes.forEach(function (restaurante) {
 		plantillaFinal += plantillaDatosRestaurante.replace("_NombreRestaurante_", restaurante.nombre)
@@ -93,6 +95,16 @@ var mostrarRestaurantes= function () {
 			.replace("_foto_", restaurante.foto);
 	});
 	$("#restaurantes").html(plantillaFinal);
+};
+
+var filtrarRestaurantes = function (e) {
+	e.preventDefault();
+	var criterioBusqueda = $("#search").val().toLowerCase();
+	var restaurantesFiltrados = arregloRestaurantes.filter(function (restaurante) {
+		return restaurante.nombre.toLowerCase().indexOf(criterioBusqueda) >= 0;
+	});
+  console.log(restaurantesFiltrados)
+	mostrarRestaurantes(restaurantesFiltrados);
 };
 
 $(document).ready(cargarPagina);
