@@ -56,7 +56,7 @@ var arregloRestaurantes = [
 var cargarPagina = function(){
   obtenerUbicacion();
   mostrarRestaurantes(arregloRestaurantes);
-  $("#busqueda").submit(filtrarRestaurantes);
+  $("#search").keyup(filtrarRestaurantes);
   //al dar click en el restaurante te cambia la ubicacion en el mapa
   $(document).on("click", ".restaurante", cambiarPosicionMapa);
 };
@@ -84,10 +84,10 @@ var cambiarPosicionMapa = function (){
 		lat: latitud,
 		lng: longitud
 	};
-
 	mostrarMapa(coordenadas);
 };
 
+//coordenadas tiene que ser un objeto ---> coordenadas= {lat:latitud , lng:longitud}
 var mostrarMapa = function (coordenadas) {
 	var map = new google.maps.Map($('.map')[0], {
       zoom: 17,
