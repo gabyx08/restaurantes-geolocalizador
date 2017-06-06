@@ -40,7 +40,7 @@ var arregloRestaurantes = [
     foto: "http://lorempixel.com/100/100/food/6"
   }];
 
-   var plantillaDatosRestaurante = '<div class="card horizontal">'+
+   var plantillaDatosRestaurante = '<div class="card horizontal restaurante" data-latitud="_latitud_" data-longitud="_longitud_">'+
      '<div class="card-image">'+
        '<img src=_foto_>'+
      '</div>'+
@@ -57,6 +57,8 @@ var cargarPagina = function(){
   obtenerUbicacion();
   mostrarRestaurantes(arregloRestaurantes);
   $("#busqueda").submit(filtrarRestaurantes);
+  //al dar click en el restaurante te cambia la ubicacion en el mapa
+  $(document).on("click", ".restaurante", cambiarPosicionMapa);
 };
 var obtenerUbicacion = function(){
   if (navigator.geolocation) {
@@ -71,6 +73,18 @@ var mostrarPosicion = function (posicion) {
 		lat: posicion.coords.latitude,
 		lng: posicion.coords.longitude
 	};
+	mostrarMapa(coordenadas);
+};
+
+var cambiarPosicionMapa = function (){
+  var latitud = $(this).data("latitud");
+  var longitud = $(this).data("longitud");
+
+  var coordenadas = {
+		lat: latitud,
+		lng: longitud
+	};
+
 	mostrarMapa(coordenadas);
 };
 
@@ -90,28 +104,21 @@ var filtrarRestaurantes = function (e) {
 	var criterioBusqueda = $("#search").val().toLowerCase();
 	var restaurantesFiltrados = arregloRestaurantes.filter(function (restaurante) {
 		return restaurante.nombre.toLowerCase().indexOf(criterioBusqueda) >= 0;
-  //   if(restaurante.nombre.toLowerCase().indexOf(criterioBusqueda) >= 0){
-  //     return restaurante.nombre.toLowerCase().indexOf(criterioBusqueda);
-  //   } else{
-  //     restaurante.hide();
-  //   }
 	});
-  console.log(restaurantesFiltrados)
 	mostrarRestaurantes(restaurantesFiltrados);
 };
 
 var mostrarRestaurantes= function (restaurantes) {
-  console.log(restaurantes)
 	var plantillaFinal = "";
 	restaurantes.forEach(function (restaurante) {
 		plantillaFinal += plantillaDatosRestaurante.replace("_NombreRestaurante_", restaurante.nombre)
       .replace("_comida_", restaurante.comida)
 			.replace("_direccion_", restaurante.direccion)
-			.replace("_foto_", restaurante.foto);
+			.replace("_foto_", restaurante.foto)
+      .replace("_latitud_", restaurante.latitud)
+      .replace("_longitud_", restaurante.longitud);
 	});
 	$("#restaurantes").html(plantillaFinal);
 };
-
-
 
 $(document).ready(cargarPagina);
