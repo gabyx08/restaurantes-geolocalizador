@@ -5,4 +5,8 @@
 .map{
   width: 100%;
   height: 400px;
+  /* se puede usar vh en el heigth (vh es tamaño de la pantalla; 100vh, es toda la pantalla; 50vh la mitad de la pantalla)*/
+}
+.restautante{
+  cursor: pointer;
 }
